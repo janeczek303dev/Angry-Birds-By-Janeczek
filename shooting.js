@@ -9,11 +9,20 @@ export class Shooter {
         let distance = Math.sqrt(Math.pow(x - mouse.x,2) + Math.pow(y - mouse.y, 2));
         return distance;
     }
+ 
     static calculatePower(x,y){
         let distance = this.calculateDistance(x,y);
-        let pow = shootingPower * distance;
+        let pow;
+
+        if(distance < maxDistanceFromCatapult){
+            pow = shootingPower * distance;
+        }
+        else{
+            pow = shootingPower * maxDistanceFromCatapult;
+        }
         return pow;
     }
+
     static calculateDirection(x,y){
         let dir = {
             dx: x - mouse.x,
@@ -27,6 +36,7 @@ export class Shooter {
 
         return dir;    
     }
+
     static shoot(object,x,y){
         let dir = this.calculateDirection(x,y);
         let pow = this.calculatePower(x,y);
