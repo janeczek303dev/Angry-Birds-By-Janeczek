@@ -4,6 +4,7 @@ import { Engine, Phiscis_Obj, Rendering_Engine, Phiscis_Tools, phisicsObjects, k
 import { gravity_values, groundFriction, airResistacce, moveForce } from "./engine/settings.js";
 import { mouse } from "./engine/mouseengine.js";
 import { loadLevel, levels } from "./map%20definitions/map.js";
+import { Shooter } from "./shooting.js";
 const canvas = document.getElementById("sex");
 const ctx = canvas.getContext("2d");
 ctx.fillStyle='Black';
@@ -14,12 +15,14 @@ let gameTime = 0;
 // Physics timing
 const fixedDeltaTime = 1 / 60;
 let physicsAccumulator = 0;
-//BOUNDARIES OF THE CANVAS
-// const floor_obj = new Phiscis_Obj(0,498,30,1000,false,0,0.1,"Black");
-// const roof_obj = new Phiscis_Obj(0,-28,30,1000,false,0,0.1,"Black");
-// const left_wall_obj = new Phiscis_Obj(-28,0,1000,30,false,0,0.1,"Black");
-// const right_wall_obj = new Phiscis_Obj(998,0,1000,30,false,0,0.1,"Black");
-//////////////////////////////////////////////////////////////////////////////
+//////////////////////////
+let bird;
+
+let catapult = {
+    x: 200,
+    y: 350
+};
+
 
 document.addEventListener("keydown", function(event) {
     keys[event.key] = true;
@@ -45,8 +48,7 @@ function start() {
         }
         else{
             object.invmass = 0;
-        }
-        
+        }  
     }
 }
 
@@ -153,7 +155,12 @@ function fixedUpdate(dt) {
 
 
 function update(dt) {
+    
 }
 
-loadLevel(levels[0]);
+function spawnPlayer(h,w,m,r,c){
+    let pl = new Phiscis_Obj(catapult.x,catapult.y,h,w,false,m,r,c);
+    return pl;
+}
+
 start();

@@ -2,6 +2,7 @@ const canvas = document.getElementById("sex");
 const ctx = canvas.getContext("2d");
 ctx.fillStyle='Black';
 
+import {mouse} from "./mouseengine.js";
 
 export const keys = {};
 export let phisicsObjects = [];
@@ -91,6 +92,9 @@ export class Rendering_Engine {
             }
         }
 
+        this.drawDot(mouse.x, mouse.y, 2, "Black");
+        this.drawDot(200,350,5,"brown");
+
         //Engine.debugSleeping(sleeping_phisicsObjects);
         Engine.debugOrigin();
    
@@ -109,7 +113,15 @@ export class Rendering_Engine {
         ctx.restore();
     }
 
-    
+    static drawDot(x, y, radius, color){
+        ctx.save();
+        ctx.beginPath();
+        ctx.arc(x, y, radius, 0, Math.PI * 2);
+        ctx.fillStyle = color;
+        ctx.fill();
+        ctx.restore();
+    }
+
     static drawGameobject(object){
         ctx.fillStyle = object.fillStyle;
         ctx.fillRect(object.x, object.y, object.objectW, object.objectH);
@@ -183,6 +195,7 @@ export class Phiscis_Tools {
             }
         }
     }
+
     static checkCollision(objectA, objectB){
         var a_left = objectA.x;
         var a_right = objectA.x + objectA.objectW;
@@ -199,6 +212,13 @@ export class Phiscis_Tools {
         }
         else{
             return true;
+        }
+    }
+
+    static addForceAlongNormalisedVector(object,dirx,diry,power){
+        if(object.mass != 0){
+            object.xacc += dirx * power / object.mass;
+            object.yacc += diry * power/ object.mass;
         }
     }
 }
