@@ -3,6 +3,7 @@
 import { Engine, Phiscis_Obj, Rendering_Engine, Phiscis_Tools, phisicsObjects, keys } from "./engine/newengine.js";
 import { gravity_values, groundFriction, airResistacce, moveForce } from "./engine/settings.js";
 import { mouse } from "./engine/mouseengine.js";
+import { loadLevel, levels } from "./map%20definitions/map.js";
 const canvas = document.getElementById("sex");
 const ctx = canvas.getContext("2d");
 ctx.fillStyle='Black';
@@ -14,15 +15,20 @@ let gameTime = 0;
 const fixedDeltaTime = 1 / 60;
 let physicsAccumulator = 0;
 //BOUNDARIES OF THE CANVAS
-const floor_obj = new Phiscis_Obj(0,498,30,1000,false,0,0.1,"Black");
-const roof_obj = new Phiscis_Obj(0,-28,30,1000,false,0,0.1,"Black");
-const left_wall_obj = new Phiscis_Obj(-28,0,1000,30,false,0,0.1,"Black");
-const right_wall_obj = new Phiscis_Obj(998,0,1000,30,false,0,0.1,"Black");
-
+// const floor_obj = new Phiscis_Obj(0,498,30,1000,false,0,0.1,"Black");
+// const roof_obj = new Phiscis_Obj(0,-28,30,1000,false,0,0.1,"Black");
+// const left_wall_obj = new Phiscis_Obj(-28,0,1000,30,false,0,0.1,"Black");
+// const right_wall_obj = new Phiscis_Obj(998,0,1000,30,false,0,0.1,"Black");
 //////////////////////////////////////////////////////////////////////////////
 
 document.addEventListener("keydown", function(event) {
     keys[event.key] = true;
+    if(event.key === "r"){
+        loadLevel(levels[1]);
+    }
+    if(event.key === "e"){
+        loadLevel(levels[0]);
+    }
 });
 
 document.addEventListener("keyup", function(event) {
@@ -147,7 +153,7 @@ function fixedUpdate(dt) {
 
 
 function update(dt) {
-
 }
 
+loadLevel(levels[0]);
 start();

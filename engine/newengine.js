@@ -53,7 +53,7 @@ export class Phiscis_Obj {
         this.xvel = 0;
         this.yvel = 0;
         this.mass = mass;
-        this.invmass = 1;
+        this.invmass = mass === 0 ? 0 : 1 / mass;
         this.isGrounded = true;
         this.rotation =  0;
         this.aacc = 0;
