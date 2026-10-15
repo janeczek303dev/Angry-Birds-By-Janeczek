@@ -304,13 +304,15 @@ export class Engine {
 
 
     static friction(object, groundFriction, airResistance, dt){
+        let frictionAmount;
         if(object.isGrounded){
-            object.xvel -= object.xvel * groundFriction * dt;
-            
+            frictionAmount = groundFriction * dt;
         }
         else{
-            object.xvel -= object.xvel * airResistance * dt;
+            frictionAmount = airResistance * dt;
         }
+        object.xvel -= object.xvel * frictionAmount;
+        object.yvel -= object.yvel * frictionAmount;
         //object.avel -= object.avel * groundFriction * dt;
     }
 
@@ -1092,7 +1094,7 @@ export class Engine {
     }
     //fixes and stuff
     static avoidSmallNums(object){
-        if(object.xvel <= 0.9 && object.xvel >= -0.9){
+        if(object.xvel <= 0.1 && object.xvel >= -0.1){
             object.xvel = 0;
         }
         if(object.yvel <= 0.1 && object.yvel >= -0.1){

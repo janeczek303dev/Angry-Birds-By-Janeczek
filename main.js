@@ -27,17 +27,35 @@ let catapult = {
     y: 350
 };
 
+let levelLoaded = false;
+let launchPending = false;
+
 
 document.addEventListener("keydown", function(event) {
     keys[event.key] = true;
     if(event.key === "r"){
         loadLevel(levels[1]);
         bird = spawnPlayer(gameSettings.h,gameSettings.w,gameSettings.m,gameSettings.r,gameSettings.c);
+        birdData.shot = false;
+        launchPending = false;
+        levelLoaded = true;
     }
     if(event.key === "e"){
         loadLevel(levels[0]);
         bird = spawnPlayer(gameSettings.h,gameSettings.w,gameSettings.m,gameSettings.r,gameSettings.c);
+        birdData.shot = false;
+        launchPending = false;
+        levelLoaded = true;
     }
+});
+
+canvas.addEventListener("click", function() {
+    if(!levelLoaded || !bird || birdData.shot){
+        return;
+    }
+
+    launchPending = true;
+    birdData.shot = true;
 });
 
 document.addEventListener("keyup", function(event) {
@@ -122,6 +140,10 @@ function fixedUpdate(dt) {
         }
     }
 
+    if(launchPending && bird){
+        Shooter.shoot(bird,catapult.x,catapult.y);
+        launchPending = false;
+    }
 
     for(let object of phisicsObjects){
         //phase 3: calculations and stuff
@@ -161,6 +183,9 @@ function fixedUpdate(dt) {
 
 
 function update(dt) {
+    if(!birdData.shot && levelLoaded){
+        Shooter.keepUnshot(bird,catapult);
+    }
     
 }
 
