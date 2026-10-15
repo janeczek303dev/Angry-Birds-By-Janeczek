@@ -5,6 +5,7 @@ import { gravity_values, groundFriction, airResistacce, moveForce } from "./engi
 import { mouse } from "./engine/mouseengine.js";
 import { loadLevel, levels } from "./map%20definitions/map.js";
 import { Shooter } from "./shooting.js";
+import * as gameSettings from "./gamesettings.js";
 const canvas = document.getElementById("sex");
 const ctx = canvas.getContext("2d");
 ctx.fillStyle='Black';
@@ -17,6 +18,9 @@ const fixedDeltaTime = 1 / 60;
 let physicsAccumulator = 0;
 //////////////////////////
 let bird;
+let birdData = {
+    shot: false
+};
 
 let catapult = {
     x: 200,
@@ -28,9 +32,11 @@ document.addEventListener("keydown", function(event) {
     keys[event.key] = true;
     if(event.key === "r"){
         loadLevel(levels[1]);
+        bird = spawnPlayer(gameSettings.h,gameSettings.w,gameSettings.m,gameSettings.r,gameSettings.c);
     }
     if(event.key === "e"){
         loadLevel(levels[0]);
+        bird = spawnPlayer(gameSettings.h,gameSettings.w,gameSettings.m,gameSettings.r,gameSettings.c);
     }
 });
 
@@ -159,7 +165,7 @@ function update(dt) {
 }
 
 function spawnPlayer(h,w,m,r,c){
-    let pl = new Phiscis_Obj(catapult.x,catapult.y,h,w,false,m,r,c);
+    let pl = new Phiscis_Obj("cat",catapult.x,catapult.y,h,w,false,m,r,c);
     return pl;
 }
 

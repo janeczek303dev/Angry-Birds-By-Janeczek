@@ -11,7 +11,8 @@ let sleeping_phisicsObjects = [];
 
 
 export class Phiscis_Obj {
-    constructor(x,y,height,width,isInteractable,mass,restitution,color){
+    constructor(tag,x,y,height,width,isInteractable,mass,restitution,color){
+        this.tag = tag;
         this.isInteractable = isInteractable;
         this.x = x;
         this.y = y;
