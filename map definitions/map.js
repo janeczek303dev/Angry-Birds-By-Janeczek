@@ -39,12 +39,12 @@ const boundaries = [
     new Level_Obj("b",998,0,1000,30,false,0,0.1,"Black")
 ];
 let level1 = [
-    new Level_Obj("lev",800,300,200,30,false,1,0, "#895129"),
-    new Level_Obj("lev",700,300,200,30,false,1,0, "#895129"),
-    new Level_Obj("lev",700,300,30,130,false,1,0, "#895129"),
-    new Level_Obj("lev",700,70,200,30,false,1,0, "#895129"),
-    new Level_Obj("lev",800,70,200,30,false,1,0, "#895129"),
-    new Level_Obj("lev",700,30,30,130,false,1,0, "#895129"),
+    new Level_Obj("lev",800,300,200,50,false,1,0.1, "#895129"),
+    new Level_Obj("lev",650,300,200,50,false,1,0.1, "#895129"),
+    new Level_Obj("lev",650,300,30,220,false,0.5,0.1, "#895129"),
+    new Level_Obj("lev",700,70,100,30,false,0.2,0.1, "#895129"),
+    new Level_Obj("lev",800,70,100,30,false,0.2,0.1, "#895129"),
+    //new Level_Obj("lev",700,30,30,130,false,0.2,0.1, "#895129"),
     
 ];
 let level2 = [

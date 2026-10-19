@@ -1,5 +1,5 @@
 //Shooting settings
-export const shootingPower = 1000;
+export const shootingPower = 2000;
 export const maxDistanceFromCatapult = 100;
 
 //Player values

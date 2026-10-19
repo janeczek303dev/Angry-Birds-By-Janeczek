@@ -1,6 +1,6 @@
 
 //REQUIRED BY THE ENGINE/////////////////////////////////////////////////////
-import { Engine, Phiscis_Obj, Rendering_Engine, Phiscis_Tools, phisicsObjects, keys } from "./engine/newengine.js";
+import { Engine, Phiscis_Obj, Rendering_Engine, Phiscis_Tools, phisicsObjects, keys , GlobalContactPoints} from "./engine/newengine.js";
 import { gravity_values, groundFriction, airResistacce, moveForce } from "./engine/settings.js";
 import { mouse } from "./engine/mouseengine.js";
 import { loadLevel, levels } from "./map%20definitions/map.js";
@@ -161,9 +161,14 @@ function fixedUpdate(dt) {
             
             let A = phisicsObjects[i];
             let B = phisicsObjects[j];
-            Engine.resolveCollision(A, B);
+            Engine.resolveCollisionForPoints(A, B,dt);
+            
         }
     }
+
+
+    Engine.collisionResponse(GlobalContactPoints);
+    Engine.clearGlobalPoints();
     
     
 
