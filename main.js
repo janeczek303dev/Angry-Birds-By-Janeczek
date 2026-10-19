@@ -34,14 +34,14 @@ let launchPending = false;
 document.addEventListener("keydown", function(event) {
     keys[event.key] = true;
     if(event.key === "r"){
-        loadLevel(levels[1]);
+        loadLevel(1);
         bird = spawnPlayer(gameSettings.h,gameSettings.w,gameSettings.m,gameSettings.r,gameSettings.c);
         birdData.shot = false;
         launchPending = false;
         levelLoaded = true;
     }
     if(event.key === "e"){
-        loadLevel(levels[0]);
+        loadLevel(0);
         bird = spawnPlayer(gameSettings.h,gameSettings.w,gameSettings.m,gameSettings.r,gameSettings.c);
         birdData.shot = false;
         launchPending = false;
