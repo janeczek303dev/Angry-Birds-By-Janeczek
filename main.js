@@ -3,7 +3,7 @@
 import { Engine, Phiscis_Obj, Rendering_Engine, Phiscis_Tools, phisicsObjects, keys , GlobalContactPoints} from "./engine/newengine.js";
 import { gravity_values, groundFriction, airResistacce, moveForce } from "./engine/settings.js";
 import { mouse } from "./engine/mouseengine.js";
-import { loadLevel, levels } from "./map%20definitions/map.js";
+import { loadLevel, levels, generatePilars } from "./map%20definitions/map.js";
 import { Shooter } from "./shooting.js";
 import * as gameSettings from "./gamesettings.js";
 const canvas = document.getElementById("sex");
@@ -33,14 +33,9 @@ let launchPending = false;
 
 document.addEventListener("keydown", function(event) {
     keys[event.key] = true;
-    if(event.key === "r"){
-        loadLevel(1);
-        bird = spawnPlayer(gameSettings.h,gameSettings.w,gameSettings.m,gameSettings.r,gameSettings.c);
-        birdData.shot = false;
-        launchPending = false;
-        levelLoaded = true;
-    }
+
     if(event.key === "e"){
+        generatePilars(300, 8, 40, 300, 20, 10, 0.5, "red");
         loadLevel(0);
         bird = spawnPlayer(gameSettings.h,gameSettings.w,gameSettings.m,gameSettings.r,gameSettings.c);
         birdData.shot = false;

@@ -1,5 +1,21 @@
 import { Engine, Phiscis_Obj, Rendering_Engine, phisicsObjects } from "../engine/newengine.js";
 
+export const levels_container = [];
+export const levels = [];
+
+let container_index = 0;
+let unique_ids = [];
+
+class Level {
+    constructor(index, obj_index){
+        this.index = index;
+        this.obj_index = obj_index;
+
+        levels_container[this.index] = this;
+    }
+
+}
+
 class Level_Obj {
     constructor(tag,x,y,height,width,isInteractable,mass,restitution,color){
         this.tag = tag;
@@ -13,44 +29,6 @@ class Level_Obj {
         this.color = color;
     }
 }
-class Pig_obj {
-    constructor(x,y,mass,restitution,color){
-        this.tag = "pig";
-        this.x = x;
-        this.y = y;
-        this.height = 50;
-        this.width = 50;
-        this.isInteractable = false;
-        this.mass = mass;
-        this.restitution = restitution;
-        this.color = color;
-    }
-}
-
-export const levels = [];
-export const pigs = [];
-
-
-export function loadLevel(x){
-    console.log("Loading level...");
-    Engine.removePhisicsObjects(true);
-    Rendering_Engine.clearTheCanvas();
-    for(let boundary of boundaries){
-        new Phiscis_Obj(boundary.tag,boundary.x,boundary.y,boundary.height,boundary.width,boundary.isInteractable,boundary.mass,boundary.restitution,boundary.color);
-    }
-    for(let object of levels[x]){
-        new Phiscis_Obj(object.tag,object.x,object.y,object.height,object.width,object.isInteractable,object.mass,object.restitution,object.color);
-    }
-    for(let pig of pigs[x]){
-        new Phiscis_Obj(pig.tag,pig.x,pig.y,pig.height,pig.width,pig.isInteractable,pig.mass,pig.restitution,pig.color);
-    }
-    console.log("Level loaded!");
-}
-
-let pigs_level_1 = [
-    //enew Pig_obj(740,40,2,0.7, "Green"),
-    new Pig_obj(740,0,0.5,0.9,"Green")
-];
 
 const boundaries = [
     new Level_Obj("floor",0,498,30,1000,false,0,0.1,"Black"),
@@ -58,17 +36,86 @@ const boundaries = [
     new Level_Obj("b",-28,0,1000,30,false,0,0.1,"Black"),
     new Level_Obj("b",998,0,1000,30,false,0,0.1,"Black")
 ];
-let level1 = [
-    new Level_Obj("lev",800,300,200,50,false,1,0.1, "#895129"),
-    new Level_Obj("lev",650,300,200,50,false,1,0.1, "#895129"),
-    new Level_Obj("lev",650,300,30,220,false,0.5,0.1, "#895129"),
-    new Level_Obj("lev",700,140,100,30,false,0.2,0.1, "#895129"),
-    new Level_Obj("lev",800,140,100,30,false,0.2,0.1, "#895129"),
-    new Level_Obj("lev",700,110,30,130,false,0.2,0.1, "#895129"),
+
+
+
+export function generatePilars(start, amount, density,height,width,mass,restitution,color){
+    let current_level = [];
+    let current_pos;
+    let first_ite = true;
+
+    for(let i = 0; i<amount; i++){
+        if(first_ite){
+            let obj = new Level_Obj("pilar",start,500 - height,height,width,false,mass,restitution,color);
+            first_ite = false;
+            current_level.push(obj);
+            current_pos = obj.x;
+        }
+        else{
+            let x = current_pos += density;
+            let obj = new Level_Obj("pilar",x,500 - height,height,width,false,mass,restitution,color);
+            current_level.push(obj);
+            current_pos = obj.x;
+        }
+    }
+    createLevel(current_level);
+}
+
+
+function createLevel(objects){
+    let maximum = 3000;
+    let minimum = 10;
     
-];
-let level2 = [
-    new Level_Obj("lev",300,300,20,100,false,3,0.05, "red"),
-];
-levels.push(level1,level2);
-pigs.push(pigs_level_1);
+    let id_found = false;
+    let found_id;
+
+    while(!id_found){
+        let new_id = Math.floor(Math.random() * (maximum - minimum)) + minimum;
+        let duplicate = false;
+        for(let id of unique_ids){
+            if(new_id === id){
+                duplicate = true;
+                break;
+            }
+        }
+        if(!duplicate){
+            id_found = true;
+            unique_ids.push(new_id);
+            found_id = new_id;
+        }
+    }
+
+    levels[found_id] = objects;
+
+    new Level(container_index,found_id);
+
+    container_index++;
+}
+
+
+export function loadLevel(x) {
+    console.log("Loading level...");
+    Engine.removePhisicsObjects(true);
+    Rendering_Engine.clearTheCanvas();
+
+    if (!levels_container[x]) {
+        console.error(`Error: Level at index ${x} does not exist in levels_container.`);
+        return;
+    }
+
+    let id_to_load = levels_container[x].obj_index;
+
+    if (!levels[id_to_load]) {
+        console.error(`Error: Level with id ${id_to_load} does not exist in levels.`);
+        return;
+    }
+
+    for (let boundary of boundaries) {
+        new Phiscis_Obj(boundary.tag, boundary.x, boundary.y, boundary.height, boundary.width, boundary.isInteractable, boundary.mass, boundary.restitution, boundary.color);
+    }
+
+    for (let obj of levels[id_to_load]) {
+        new Phiscis_Obj(obj.tag, obj.x, obj.y, obj.height, obj.width, obj.isInteractable, obj.mass, obj.restitution, obj.color);
+    }
+    console.log("Level loaded!");
+}
