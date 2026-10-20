@@ -58,12 +58,40 @@ export function generatePilars(start, amount, density,height,width,mass,restitut
             current_pos = obj.x;
         }
     }
-    createLevel(current_level);
+    return current_level;
+}
+
+export function generateBuildings(amount,density,height,width,mass,color){
+    let objects = [];
+    let current_pos =  300 + my_random(-20,20);
+    let density_s = 200 + my_random(-40,40);
+    let mass_s = 4 + my_random(-1,1);
+
+    for(let i = 0; i < amount; i++){
+        let building_base = generatePilars(current_pos, 2, density_s, height * 2/5, width * 1/5, mass_s, 0.1);
+        let intersection = createMapObject("obj",current_pos,(500 - height) - height * 1/5,height * 1/5, width, mass_s,0.1,);
+        objects.push(building_base,intersection);
+        current_pos + density;
+    }
+    createLevel(objects);
+}
+
+export function createMapObject(t,x,y,h,w,m,r,c){
+    let obj = new Level_Obj(t,x,y,h,w,false,m,r,c);
+    return obj;
+}
+
+
+function insertIntoExisting(objects, container_index){
+    var id = levels_container[x].index;
+    for(let object of objects){
+        levels[id].push(object);
+    }
 }
 
 
 function createLevel(objects){
-    let maximum = 3000;
+    let maximum = 30000;
     let minimum = 10;
     
     let id_found = false;
@@ -90,6 +118,10 @@ function createLevel(objects){
     new Level(container_index,found_id);
 
     container_index++;
+}
+
+function my_random(min,max){
+    return Math.floor(Math.random() * (max - min)) + min;
 }
 
 

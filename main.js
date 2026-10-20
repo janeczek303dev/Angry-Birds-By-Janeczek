@@ -6,6 +6,7 @@ import { mouse } from "./engine/mouseengine.js";
 import { loadLevel, levels, generatePilars } from "./map%20definitions/map.js";
 import { Shooter } from "./shooting.js";
 import * as gameSettings from "./gamesettings.js";
+import { generateBuildings } from "./map definitions/map.js";
 const canvas = document.getElementById("sex");
 const ctx = canvas.getContext("2d");
 ctx.fillStyle='Black';
@@ -35,7 +36,7 @@ document.addEventListener("keydown", function(event) {
     keys[event.key] = true;
 
     if(event.key === "e"){
-        generatePilars(300, 8, 40, 300, 20, 10, 0.5, "red");
+        generateBuildings(2,200,200,100,2,"Red");
         loadLevel(0);
         bird = spawnPlayer(gameSettings.h,gameSettings.w,gameSettings.m,gameSettings.r,gameSettings.c);
         birdData.shot = false;
