@@ -36,7 +36,7 @@ document.addEventListener("keydown", function(event) {
     keys[event.key] = true;
 
     if(event.key === "e"){
-        generateBuildings(2,200,200,100,2,"Red");
+        generateBuildings(2,400,200,30,2,"Red");
         loadLevel(0);
         bird = spawnPlayer(gameSettings.h,gameSettings.w,gameSettings.m,gameSettings.r,gameSettings.c);
         birdData.shot = false;
@@ -161,7 +161,6 @@ function fixedUpdate(dt) {
             
         }
     }
-
 
     Engine.collisionResponse(GlobalContactPoints);
     Engine.clearGlobalPoints();

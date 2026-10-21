@@ -39,21 +39,21 @@ const boundaries = [
 
 
 
-export function generatePilars(start, amount, density,height,width,mass,restitution,color){
+export function generatePilars(start,vertical, amount, density,height,width,mass,restitution,color){
     let current_level = [];
     let current_pos;
     let first_ite = true;
 
     for(let i = 0; i<amount; i++){
         if(first_ite){
-            let obj = new Level_Obj("pilar",start,500 - height,height,width,false,mass,restitution,color);
+            let obj = new Level_Obj("pilar",start,vertical,height,width,false,mass,restitution,color);
             first_ite = false;
             current_level.push(obj);
             current_pos = obj.x;
         }
         else{
             let x = current_pos += density;
-            let obj = new Level_Obj("pilar",x,500 - height,height,width,false,mass,restitution,color);
+            let obj = new Level_Obj("pilar",x,vertical,height,width,false,mass,restitution,color);
             current_level.push(obj);
             current_pos = obj.x;
         }
@@ -61,20 +61,31 @@ export function generatePilars(start, amount, density,height,width,mass,restitut
     return current_level;
 }
 
-export function generateBuildings(amount,density,height,width,mass,color){
+export function generateBuildings(amount,density,height,width,mass,color,target_lvl){
     let objects = [];
     let current_pos =  300 + my_random(-20,20);
     let density_s = 200 + my_random(-40,40);
-    let mass_s = 4 + my_random(-1,1);
+    let mass_s = 4 + my_random(-1,2);
 
     for(let i = 0; i < amount; i++){
-        let building_base = generatePilars(current_pos, 2, density_s, height * 2/5, width * 1/5, mass_s, 0.1);
-        let intersection = createMapObject("obj",current_pos,(500 - height) - height * 1/5,height * 1/5, width, mass_s,0.1,);
-        objects.push(building_base,intersection);
-        current_pos + density;
+        let building_base = generatePilars(current_pos, 500-height * 4.5/10, 2, density_s, height * 2/5, width * 4/10, mass_s, 0.1,color);
+        console.log("base created");
+        for(let obj of building_base){objects.push(obj);}
+
+        let intersection = createMapObject("obj",current_pos,(500 - height * 5.5/10),height * 1/10, density_s + width * 4/10, mass_s,0.1,"red");
+        objects.push(intersection);
+
+        let building_floor2 = generatePilars(current_pos,(500-height), 2, density_s, height * 4.5/10, width * 4/10, mass_s, 0.1,color);
+        for(let obj of building_floor2){objects.push(obj);}
+
+        let intersection2 = createMapObject("obj",current_pos,(500 - height * 11/10),height * 1/10, density_s + width * 4/10, mass_s,0.1,"red");
+        objects.push(intersection2);
+
+        current_pos += density;
     }
-    createLevel(objects);
+    insertIntoExisting(objects,target_lvl)  
 }
+
 
 export function createMapObject(t,x,y,h,w,m,r,c){
     let obj = new Level_Obj(t,x,y,h,w,false,m,r,c);
@@ -83,7 +94,13 @@ export function createMapObject(t,x,y,h,w,m,r,c){
 
 
 function insertIntoExisting(objects, container_index){
-    var id = levels_container[x].index;
+    if (!levels_container[container_index]) {
+        createLevel(objects);
+        return 0;
+    }
+
+    let id = levels_container[container_index].index;
+
     for(let object of objects){
         levels[id].push(object);
     }
@@ -91,6 +108,7 @@ function insertIntoExisting(objects, container_index){
 
 
 function createLevel(objects){
+    console.log("started creating lvl");
     let maximum = 30000;
     let minimum = 10;
     
