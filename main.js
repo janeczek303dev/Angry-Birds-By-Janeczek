@@ -38,7 +38,7 @@ document.addEventListener("keydown", function(event) {
 
     if(event.key === "e"){
 
-        generateRealBuildings(2,4,200,300,300,100,"red",1,testv);
+        generateRealBuildings(1,2,200,300,300,200,"red",1,testv);
         loadLevel(0);
         bird = spawnPlayer(gameSettings.h,gameSettings.w,gameSettings.m,gameSettings.r,gameSettings.c);
         birdData.shot = false;

@@ -66,6 +66,7 @@ export function generateBuildings(amount,density,height,width,mass,color,target_
     let current_pos =  300 + my_random(-20,20);
     let density_s = 200 + my_random(-40,40);
     let mass_s = 4 + my_random(-1,2);
+    
 
     for(let i = 0; i < amount; i++){
         let building_base = generatePilars(current_pos, 500-height * 4.5/10, 2, density_s, height * 2/5, width * 4/10, mass_s, 0.1,color);
@@ -94,7 +95,8 @@ export function generateRealBuildings(amount,floors, density, start, height,widt
     const pillar_height_ratio = 0.7;
     const inter_height_ratio = 0.3;
     const pillar_width_ratio = 0.2;
-    let density2 = 200
+    let density2 = 200;
+    let debug = 10;
 
     for(let building = 0; building < amount; building++){
         let current_height = building_start_y;
@@ -103,14 +105,34 @@ export function generateRealBuildings(amount,floors, density, start, height,widt
             const pillar_height = floor_height * pillar_height_ratio;
             const pillar_width = width * pillar_width_ratio;
             const intersection_height = floor_height * inter_height_ratio;
+            const object_gap = 4;
+            const beam_y = current_height - debug;
 
-            let base = generatePilars(current_pos, current_height + pillar_height * 0.5, 2, width, pillar_height, pillar_width, mass, 0.1, color);
-            let intersection = createMapObject("obj", current_pos, (current_height), intersection_height, width*1.2, mass, 0.1, color);
-
+            let base = generatePilars(
+                current_pos,
+                beam_y + intersection_height + object_gap,
+                2,
+                width,
+                pillar_height,
+                pillar_width,
+                mass,
+                0.1,
+                color
+            );
+            let intersection = createMapObject(
+                "obj",
+                current_pos,
+                beam_y,
+                intersection_height,
+                width * 1.2,
+                mass,
+                0.1,
+                color
+            );
             for(let pil of base){objects.push(pil);}
             objects.push(intersection);
 
-            current_height += floor_height;
+            current_height += floor_height + debug;
         }
 
         current_pos += density;
