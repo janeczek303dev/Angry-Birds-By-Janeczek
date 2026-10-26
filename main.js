@@ -6,7 +6,7 @@ import { mouse } from "./engine/mouseengine.js";
 import { loadLevel, levels, generatePilars } from "./map%20definitions/map.js";
 import { Shooter } from "./shooting.js";
 import * as gameSettings from "./gamesettings.js";
-import { generateBuildings } from "./map definitions/map.js";
+import { generateBuildings, generateRealBuildings } from "./map definitions/map.js";
 const canvas = document.getElementById("sex");
 const ctx = canvas.getContext("2d");
 ctx.fillStyle='Black';
@@ -31,17 +31,20 @@ let catapult = {
 let levelLoaded = false;
 let launchPending = false;
 
+let testv = 0;
 
 document.addEventListener("keydown", function(event) {
     keys[event.key] = true;
 
     if(event.key === "e"){
-        generateBuildings(2,400,200,30,2,"Red");
+
+        generateRealBuildings(2,4,200,300,300,100,"red",1,testv);
         loadLevel(0);
         bird = spawnPlayer(gameSettings.h,gameSettings.w,gameSettings.m,gameSettings.r,gameSettings.c);
         birdData.shot = false;
         launchPending = false;
         levelLoaded = true;
+        testv++;
     }
 });
 

@@ -86,6 +86,38 @@ export function generateBuildings(amount,density,height,width,mass,color,target_
     insertIntoExisting(objects,target_lvl)  
 }
 
+export function generateRealBuildings(amount,floors, density, start, height,width,color,mass,target_lvl){
+    let objects = [];
+    let current_pos = start;
+    const floor_height = height / floors;
+    const building_start_y = 500 - height;
+    const pillar_height_ratio = 0.7;
+    const inter_height_ratio = 0.3;
+    const pillar_width_ratio = 0.2;
+    let density2 = 200
+
+    for(let building = 0; building < amount; building++){
+        let current_height = building_start_y;
+
+        for(let floor = 0; floor < floors; floor++){
+            const pillar_height = floor_height * pillar_height_ratio;
+            const pillar_width = width * pillar_width_ratio;
+            const intersection_height = floor_height * inter_height_ratio;
+
+            let base = generatePilars(current_pos, current_height + pillar_height * 0.5, 2, width, pillar_height, pillar_width, mass, 0.1, color);
+            let intersection = createMapObject("obj", current_pos, (current_height), intersection_height, width*1.2, mass, 0.1, color);
+
+            for(let pil of base){objects.push(pil);}
+            objects.push(intersection);
+
+            current_height += floor_height;
+        }
+
+        current_pos += density;
+    }
+    insertIntoExisting(objects,target_lvl);
+}
+
 
 export function createMapObject(t,x,y,h,w,m,r,c){
     let obj = new Level_Obj(t,x,y,h,w,false,m,r,c);
@@ -93,7 +125,7 @@ export function createMapObject(t,x,y,h,w,m,r,c){
 }
 
 
-function insertIntoExisting(objects, container_index){
+export function insertIntoExisting(objects, container_index){
     if (!levels_container[container_index]) {
         createLevel(objects);
         return 0;
@@ -107,7 +139,7 @@ function insertIntoExisting(objects, container_index){
 }
 
 
-function createLevel(objects){
+export function createLevel(objects){
     console.log("started creating lvl");
     let maximum = 30000;
     let minimum = 10;
@@ -138,8 +170,8 @@ function createLevel(objects){
     container_index++;
 }
 
-function my_random(min,max){
-    return Math.floor(Math.random() * (max - min)) + min;
+export function my_random(min,max){
+    return Math.floor(Math.random() * (max - min + 1)) + min;
 }
 
 
